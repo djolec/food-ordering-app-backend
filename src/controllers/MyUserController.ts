@@ -17,14 +17,13 @@ const getCurrentUser = async (req: Request, res: Response) => {
   }
 };
 
-const createCurrentUser = async (req: Request, res: Response) => {
+const createCurrentUser = async (req: Request, res: Response): Promise<any> => {
   try {
     const { auth0Id } = req.body;
     const existingUser = await User.findOne({ auth0Id });
 
     if (existingUser) {
-      res.status(200).send();
-      return;
+      return res.status(200).send();
     }
 
     const newUser = new User(req.body);
@@ -37,17 +36,13 @@ const createCurrentUser = async (req: Request, res: Response) => {
   }
 };
 
-const updateCurrentUser = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+const updateCurrentUser = async (req: Request, res: Response): Promise<any> => {
   try {
     const { name, addressLine1, country, city } = req.body;
     const user = await User.findById(req.userId);
 
     if (!user) {
-      res.status(404).json({ message: "User not found" });
-      return;
+      return res.status(404).json({ message: "User not found" });
     }
 
     user.name = name;
