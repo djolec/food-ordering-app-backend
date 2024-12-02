@@ -8,7 +8,7 @@ const getMyRestaurant = async (req: Request, res: Response): Promise<any> => {
     const restaurant = await Restaurant.findOne({ user: req.userId });
 
     if (!restaurant) {
-      return res.status(404).json({ message: "Restaurant not found" });
+      return res.sendStatus(404);
     }
 
     res.json(restaurant);
