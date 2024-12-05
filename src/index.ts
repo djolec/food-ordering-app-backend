@@ -4,6 +4,7 @@ import "dotenv/config";
 import mongoose from "mongoose";
 import myUserRoute from "./routes/MyUserRoute";
 import myRestaurantRoute from "./routes/MyRestauranRoute";
+import restaurantRoute from "./routes/RestaurantRoute";
 const PORT = process.env.PORT || 7000;
 import { v2 as cloudinary } from "cloudinary";
 
@@ -27,6 +28,8 @@ app.get("/health", async (req: Request, res: Response) => {
 
 app.use("/api/my/user", myUserRoute);
 app.use("/api/my/restaurant", myRestaurantRoute);
+
+app.use("/api/restaurant", restaurantRoute);
 
 app.listen(PORT, () => {
   console.log(`Server started on ${PORT}`);

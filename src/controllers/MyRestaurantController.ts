@@ -3,12 +3,13 @@ import Restaurant from "../models/Restaurant";
 import cloudinary from "cloudinary";
 import mongoose from "mongoose";
 
-const getMyRestaurant = async (req: Request, res: Response): Promise<any> => {
+const getMyRestaurant = async (req: Request, res: Response): Promise<void> => {
   try {
     const restaurant = await Restaurant.findOne({ user: req.userId });
 
     if (!restaurant) {
-      return res.sendStatus(404);
+      res.sendStatus(404);
+      return;
     }
 
     res.json(restaurant);
@@ -21,20 +22,13 @@ const getMyRestaurant = async (req: Request, res: Response): Promise<any> => {
 const createMyRestaurant = async (
   req: Request,
   res: Response
-): Promise<any> => {
+): Promise<void> => {
   try {
     const existingRestaurant = await Restaurant.findOne({ user: req.userId });
     if (existingRestaurant) {
-      return res
-        .status(409)
-        .json({ message: "User restaurant already exists" });
+      res.status(409).json({ message: "User restaurant already exists" });
+      return;
     }
-
-    // const image = req.file as Express.Multer.File;
-    // const base64Image = Buffer.from(image.buffer).toString("base64");
-    // const dataURI = `data:${image.mimetype};base64,${base64Image}`;
-
-    // const uploadResponse = await cloudinary.v2.uploader.upload(dataURI);
 
     const imageUrl = await uploadImage(req.file as Express.Multer.File);
 
@@ -53,12 +47,13 @@ const createMyRestaurant = async (
 const updateMyRestaurant = async (
   req: Request,
   res: Response
-): Promise<any> => {
+): Promise<void> => {
   try {
     const restaurant = await Restaurant.findOne({ user: req.userId });
 
     if (!restaurant) {
-      return res.status(404).json({ message: "Restaurant not found" });
+      res.status(404).json({ message: "Restaurant not found" });
+      return;
     }
 
     restaurant.restaurantName = req.body.restaurantName;
