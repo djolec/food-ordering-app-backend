@@ -9,7 +9,7 @@ const STRIPE_ENDPOINT_SECRET = process.env.STRIPE_ENDPOINT_SECRET as string;
 
 const getMyOrders = async (req: Request, res: Response): Promise<any> => {
   try {
-    const orders = await Order.find({ user: req.userId })
+    const orders = await Order.find({ user: req.userId, status: "paid" })
       .populate("restaurant")
       .populate("user");
 
